@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.app.blog.entity.User;
@@ -40,7 +43,7 @@ public class ServiceImpl implements UserService {
 		
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getPassword());
+		user.setPassword(userDto.getPassword()); 
 		user.setAbout(userDto.getAbout());
 		
 		User Updateduser=this.userRepo.save(user);
@@ -94,6 +97,21 @@ public class ServiceImpl implements UserService {
 		return userDto;
 		
 		
+	}
+
+	@Override
+	public UserDetailsService userDetailsService() {
+		// TODO Auto-generated method stub
+		return new UserDetailsService() {
+			
+			@Override
+			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+				// TODO Auto-generated method stub
+				return userRepo.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("User Not Found!!"));
+			}
+		};
+		
+	
 	}
 	
 }

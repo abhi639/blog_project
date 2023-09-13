@@ -161,7 +161,7 @@ public class PostServiceImpl implements PostService {
 		List<PostDto>postDtos=posts.stream().map((post)->this.mpodelmapper.map(post,PostDto.class)).collect(Collectors.toList());
 		PostResponce resp=new PostResponce();
 		resp.setPosts(postDtos);
-		resp.setPagenumber(pagepost.getNumber());
+		resp.setPagenumber(pagepost.getTotalPages());
 		resp.setPagesize(pagepost.getSize());
 		resp.setLastpage(pagepost.isLast());
 		resp.setTotalelement(pagepost.getTotalElements());
